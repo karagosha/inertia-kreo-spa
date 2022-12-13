@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+.theme-input {
+    @apply block flex-1 rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm
+}
+
+.theme-label {
+    @apply block text-sm font-medium text-gray-700
+}
+
+.theme-btn {
+    @apply rounded-lg shadow-sm p-2 text-white mr-2 disabled:text-gray-400
+}
+
+@tailwind utilities;
+
