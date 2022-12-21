@@ -1,6 +1,6 @@
 <script setup>
 import {Head, Link} from '@inertiajs/inertia-vue3';
-import Authenticated from "@/Layouts/Authenticated";
+import Authenticated from "@/Layouts/AdminNav";
 import {Inertia} from "@inertiajs/inertia";
 
 const props = defineProps({
@@ -22,9 +22,7 @@ let change_role = (user_id) => {
 
 <template>
     <Head title="Список пользователей"/>
-    <Authenticated>
         <div class="mx-2">
-
             <div class="rounded-2xl bg-white">
                 <h2 class="text-xl mt-2 p-4">Пользователи</h2>
             </div>
@@ -33,7 +31,6 @@ let change_role = (user_id) => {
                     <Link :href="route('users.create')" class="bg-indigo-500 theme-btn p-1">добавить
                         пользователя
                     </Link>
-
                 </div>
                 <table class="w-full table-auto mt-3">
                     <thead>
@@ -44,7 +41,7 @@ let change_role = (user_id) => {
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="item in users.data">
+                    <tr v-for="item in users.data" :key="item.id">
                         <td class="p-3">{{ item.name }}</td>
                         <td class="p-3">{{ item.email }}</td>
                         <td>
@@ -64,7 +61,5 @@ let change_role = (user_id) => {
                 </table>
             </div>
         </div>
-
-    </Authenticated>
 </template>
 

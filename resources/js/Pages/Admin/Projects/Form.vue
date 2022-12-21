@@ -1,18 +1,19 @@
 <script setup>
-import {Head, Link} from '@inertiajs/inertia-vue3';
-import Authenticated from "@/Layouts/Authenticated";
-import {reactive, ref} from "vue";
+import {Head} from '@inertiajs/inertia-vue3';
+import {computed, reactive} from "vue";
 import Editor from "@tinymce/tinymce-vue";
 import {} from "../../../../../public/vendor/laravel-filemanager/js/stand-alone-button"
 import {Inertia} from "@inertiajs/inertia";
 import CodeMirror from "@/Components/CodeMirror";
 
+const pageLabel = computed(() => props.form_type === 'create' ? 'Создание проекта' : 'Редактирование проекта');
+const isCreate = computed(() => props.form_type === 'create');
+
 let submit = () => {
-    console.log();
-    if (props.form_type == "edit") {
-        Inertia.put('/admin/projects/' + props.project.id, form)
-    } else {
+    if (isCreate.value) {
         Inertia.post('/admin/projects', form);
+    } else {
+        Inertia.put('/admin/projects/' + props.project.id, form)
     }
 };
 
@@ -26,25 +27,21 @@ const props = defineProps({
 })
 
 let form = reactive({
-    title: props.project ? props.project.title : '',
-    desc: props.project ? props.project.content : '',
-    slug: props.project ? props.project.slug : '',
-    html: "div tests cres",
-    weight: props.project ? props.project.weight : '',
-    image: '',
-    is_public: props.project ? ((props.project.is_public == "1") ? true : 0) : 0,
+    title: props.project ? props.project.title : null,
+    desc: props.project ? props.project.content : null,
+    slug: props.project ? props.project.slug : null,
+    html_block: props.project ? props.project.html_block : null,
+    weight: props.project ? props.project.weight : null,
+    image: null,
+    is_public: props.project ? (props.project.is_public == "1") : false,
 });
 </script>
 
 <template>
-    <Head v-if="form_type == 'create'" title="Создание проекта"/>
-    <Head v-else title="Редактирование проекта"/>
-
-    <Authenticated>
+    <Head :title="pageLabel"/>
         <div class="mx-2">
             <div class="rounded-2xl bg-white">
-                <h2 class="text-xl mt-2 p-4" v-if="form_type == 'create'">Создание проекта</h2>
-                <h2 class="text-xl mt-2 p-4" v-else>Редактирование проекта</h2>
+                <h2 class="text-xl mt-2 p-4">{{ pageLabel }}</h2>
             </div>
             <div class="bg-white rounded-2xl mt-3 p-4">
                 <form method="POST" @submit.prevent="submit">
@@ -62,7 +59,7 @@ let form = reactive({
                         </div>
                         <div class="col-span-2 mb-3">
                             <label class="theme-label">Код отдельной страницы</label>
-                            <CodeMirror v-model="form.html"></CodeMirror>
+                            <CodeMirror v-model="form.html_block"></CodeMirror>
                         </div>
                         <div class="mb-3 col-span-2">
                             <label for="project-desc" class="theme-label">Описание проекта</label>
@@ -108,14 +105,9 @@ let form = reactive({
                 </form>
             </div>
         </div>
-    </Authenticated>
-
 </template>
 <script>
 $(document).ready(function () {
     $("#lfm").filemanager('image');
 })
 </script>
-<style>
-
-</style>

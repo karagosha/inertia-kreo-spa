@@ -38,10 +38,11 @@ use Inertia\Inertia;
 require __DIR__.'/auth.php';
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/projects', [HomeController::class, 'index_project'])->name('base.project.index');
-Route::get('/projects/{project:slug}', [HomeController::class, 'show_project'])->name('base.project.show');
+Route::get('/projects', [HomeController::class, 'index_project'])->name('base.projects.index');
+Route::get('/projects/{project:slug}', [HomeController::class, 'show_project'])->name('base.projects.show');
 Route::get('job', [HomeController::class, 'index_job'])->name('base.job.index');
 Route::get('job/{job}', [HomeController::class, 'show_job'])->name('base.job.show');
+Route::get('employees', [HomeController::class, 'index_employees'])->name('base.employees.index');
 
 
 
